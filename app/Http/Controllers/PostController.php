@@ -10,7 +10,7 @@ class PostController extends Controller
 {
     public function index(){
 
-        $posts = Post::get();
+        $posts = Post::latest()->paginate(15);
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -68,6 +68,14 @@ class PostController extends Controller
                 ->route('posts.index')
                 ->with('message', 'Post editado com sucesso!');
 
+    }
+
+    public function search(Request $request){
+
+        $posts = Post::where('title', 'LIKE', "%{$request->search}%")
+                        ->orWhere('content', 'LIKE', "%{$request->search}%")
+                        ->paginate();
+        return view('admin.posts.index', compact('posts'));
     }
 
 }
