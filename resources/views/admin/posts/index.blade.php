@@ -20,4 +20,8 @@
 @endforeach
 <hr>
 
-{{ $posts->links() }}
+@if(isset($filters))
+    {{ $posts->appends($filters)->links() }}
+@else
+    {{ $posts->links() }}
+@endif
